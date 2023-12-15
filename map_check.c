@@ -6,29 +6,17 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:21:55 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/14 21:22:00 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:23:59 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int line_lenghnt(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] && str[i] != '\n')
-	{
-		i++;
-	}
-	return (i);
-}
-
-int map_valid(int fd)
+int map_valid(char **lines)
 {
 	t_map_info map;
-	char *str;
 	int i;
+	int j;
 	int len;
 
 	map.empty = 0;
@@ -36,33 +24,31 @@ int map_valid(int fd)
 	map.exit = 0;
 	map.wall = 0;
 	map.starting = 0;
-	str = get_next_line(fd);
-	if (!str)
-		return (0);
-	len = line_lenghnt(str);
-	while (str)
+	i = 0;
+	len = ft_strlen(lines[i]);
+	while (lines[i])
 	{
-		i = 0;
-		while (str[i])
+		j = 0;
+		while (lines[i][j])
 		{
-			if (str[i] == '0')
+			if (lines[i][j] == '0')
 				map.empty++;
-			else if (str[i] == '1')
+			else if (lines[i][j] == '1')
 				map.wall++;
-			else if (str[i] == 'C')
+			else if (lines[i][j] == 'C')
 				map.collectible++;
-			else if (str[i] == 'E')
+			else if (lines[i][j] == 'E')
 				map.exit++;
-			else if (str[i] == 'P')
+			else if (lines[i][j] == 'P')
 				map.starting++;
-			else if (str[i] != '\n')
+			else
 				return (0);
-			i++;
+			j++;
 		}
-		if (len != line_lenghnt(str))
+		if (len != ft_strlen(lines[i]))
 				return (0);
-		len = line_lenghnt(str);
-		str = get_next_line(fd);
+		len = ft_strlen(lines[i]);
+		i++;
 	}
 	if (map.exit != 1 || map.collectible < 1 || map.starting != 1)
 		return (0);

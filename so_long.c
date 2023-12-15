@@ -6,28 +6,67 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/14 21:25:45 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:15:03 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char **read_map(int fd)
+int file_lines(int fd)
+{
+	int lines_num;
+	char *str;
+	lines_num = 0;
+	str = get_next_line(fd);
+	while (str)
+	{
+		lines_num++;
+		str = get_next_line(fd);
+	}
+	return (lines_num);
+}
+
+char **read_map(char *file)
 {
 	char **str;
-	
+	int lines_num;
+	int fd;
+	int i;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	lines_num = file_lines(fd);
+	close(fd);
+	str = (char **)malloc(sizeof(char *)*(lines_num) + 1);
+	if (!str)
+		return (0);
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	i = 0;
+	while (i < lines_num)
+	{
+		str[i] = ft_strtrim(get_next_line(fd), "\n");
+		i++;
+	}
+	str[lines_num] = 0;
+	close(fd);
+	return (str);
 }
 
 int main(int ac, char **av)
 {
 	char **lines;
-	int fd;
+	int i = 0;
 	if (ac == 2)
 	{
-		fd = open(av[1], O_RDONLY);
-		if (fd < 0)
+		lines = read_map(av[1]);
+		if (!lines || !map_valid(lines))
+		{
 			printf("Error\n");
-		lines = read_map(fd);
+			return (0);
+		}
 	}
 	else
 	{

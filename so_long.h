@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:26 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/14 21:13:45 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:19:56 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdio.h>
 # include <fcntl.h>
 #include <string.h>
+# include <unistd.h>
 
 typedef struct s_mlx_data
 {
@@ -43,9 +44,9 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-int		map_valid(int fd);
+int		map_valid(char **lines);
 char	*get_next_line(int fd);
-char	**ft_split(char const *s, char c);
 //libft
-size_t				ft_strlen(const char *s);
+char	*ft_strtrim(char const *s1, char const *set);
+size_t	ft_strlen(const char *s);
 #endif
