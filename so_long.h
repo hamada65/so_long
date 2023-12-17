@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:26 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 09:24:11 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:48:07 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ typedef struct s_mlx_data
 	t_img_info floor;
 	t_img_info coin;
 	t_img_info player;
+	t_img_info player_up;
+	t_img_info player_left;
+	t_img_info player_right;
 	t_img_info exit;
 	t_img_info exit_opened;
 	int required_coins;
@@ -62,4 +65,5 @@ int 	map_walls(char **lines);
 int		parse_map(char **lines);
 void	free_array(char **lines);
 void load_game(char **map);
+int map_calculate(char **s, char c);
 #endif

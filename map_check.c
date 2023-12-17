@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:21:55 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 03:50:50 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/17 21:41:42 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,25 @@ int		find_way_to_exit(char **lines, int i, int j)
 	return (0);
 }
 
+void	find_way_to_all_collectibles(char **lines, int i, int j, int required_coins, int *collected_coins)
+{
+	if (*collected_coins == required_coins)
+		return ;
+	if (lines[i][j] == 'P')
+		lines[i][j] = '0';
+	if (lines[i][j] == 'C')
+		(*collected_coins)++;
+	if (*collected_coins == required_coins)
+		return ;
+	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'E')
+		return ;
+	lines[i][j] = 'V';
+	find_way_to_all_collectibles(lines, i + 1, j, required_coins, collected_coins);
+	find_way_to_all_collectibles(lines, i - 1, j, required_coins, collected_coins);
+	find_way_to_all_collectibles(lines, i, j + 1, required_coins, collected_coins);
+	find_way_to_all_collectibles(lines, i, j - 1, required_coins, collected_coins);
+}
+
 char **ft_strdup_array(char **lines)
 {
 	char **duplicated_lines;
@@ -174,7 +193,10 @@ int		parse_map(char **lines)
 	int num_lines;
 	int i;
 	int j;
+	int collected_coins;
+	int required_coins;
 
+	required_coins = map_calculate(lines, 'C');
 	duplicated_lines = ft_strdup_array(lines);
 	num_lines = map_lines(duplicated_lines);
 	get_start_pos(duplicated_lines, &i, &j);
@@ -183,14 +205,18 @@ int		parse_map(char **lines)
 		free_array(duplicated_lines);
 		return (0);
 	}
-	//free_array(duplicated_lines);
-	//duplicated_lines = ft_strdup_array(lines);
-	//if (!find_way_to_all_collectibles(lines, i, j))
-	//{
-	//	printf("Can't reach all collectibles i = %d, j = %d\n", i, j);
-	//	free_array(duplicated_lines);
-	//	return (0);
-	//}
+	free_array(duplicated_lines);
+	duplicated_lines = ft_strdup_array(lines);
+	collected_coins = 0;
+	find_way_to_all_collectibles(duplicated_lines, i, j, required_coins, &collected_coins);
+	if (collected_coins != required_coins)
+	{
+		printf("collected_coins = %d, required = %d\n", collected_coins, required_coins);
+		printf("Can't reach all collectibles i = %d, j = %d\n", i, j);
+		free_array(duplicated_lines);
+		return (0);
+	}
+	printf("collected_coins = %d, required = %d\n", collected_coins, required_coins);
 	free_array(duplicated_lines);
 	return (1);
 }

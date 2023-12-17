@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:53:00 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 09:35:33 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:52:50 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void load_textures(t_mlx_data *mlx_data, char **map)
 
 	mlx_data->wall.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/wall.xpm", &mlx_data->wall.width, &mlx_data->wall.height);
 	mlx_data->floor.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/floor.xpm", &mlx_data->floor.width, &mlx_data->floor.height);
-	mlx_data->player.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/player.xpm", &mlx_data->player.width, &mlx_data->player.height);
+	mlx_data->player.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/player/player_down.xpm", &mlx_data->player.width, &mlx_data->player.height);
+	mlx_data->player_up.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/player/player_up.xpm", &mlx_data->player_up.width, &mlx_data->player_up.height);
+	mlx_data->player_left.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/player/player_left.xpm", &mlx_data->player_left.width, &mlx_data->player_left.height);
+	mlx_data->player_right.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/player/player_right.xpm", &mlx_data->player_right.width, &mlx_data->player_right.height);
 	mlx_data->coin.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/coin.xpm", &mlx_data->coin.width, &mlx_data->coin.height);
 	mlx_data->exit_opened.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/exit_opened.xpm", &mlx_data->exit_opened.width, &mlx_data->exit_opened.height);
 	mlx_data->exit.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/exit.xpm", &mlx_data->exit.width, &mlx_data->exit.height);
@@ -133,15 +136,15 @@ int key_release(int keycode, t_mlx_data *mlx_data)
 	i = &mlx_data->player.pos_i;
 	j = &mlx_data->player.pos_j;
 	// printf("key released : %d\n", keycode);
-	if (keycode == 119) // w
+	if (keycode == 119 || keycode == 65362) // w
 	{
 		if (mlx_data->map[(*i)-1][*j] == '1' || mlx_data->map[(*i)-1][*j] == 'E')
 			return (keycode);
 		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->floor.img, *j * 60, *i * 60);
 		(*i)--;
-		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player.img, *j * 60, *i * 60);
+		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player_up.img, *j * 60, *i * 60);
 	}
-	else if (keycode == 115) // s
+	else if (keycode == 115 || keycode == 65364) // s
 	{
 		if (mlx_data->map[(*i)+1][*j] == '1' || mlx_data->map[(*i)+1][*j] == 'E')
 			return (keycode);
@@ -149,21 +152,21 @@ int key_release(int keycode, t_mlx_data *mlx_data)
 		(*i)++;
 		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player.img, *j * 60, *i * 60);
 	}
-	else if (keycode == 97) // a
+	else if (keycode == 97 || keycode == 65361) // a
 	{
 		if (mlx_data->map[*i][(*j)-1] == '1' || mlx_data->map[*i][(*j)-1] == 'E')
 			return (keycode);
 		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->floor.img, *j * 60, *i * 60);
 		(*j)--;
-		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player.img, *j * 60, *i * 60);
+		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player_left.img, *j * 60, *i * 60);
 	}
-	else if (keycode == 100) // d
+	else if (keycode == 100 || keycode == 65363) // d
 	{
 		if (mlx_data->map[*i][(*j)+1] == '1' || mlx_data->map[*i][(*j)+1] == 'E')
 			return (keycode);
 		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->floor.img, *j * 60, *i * 60);
 		(*j)++;
-		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player.img, *j * 60, *i * 60);
+		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->player_right.img, *j * 60, *i * 60);
 	}
 	else
 		return (keycode);
