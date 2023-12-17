@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/15 16:15:03 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/17 05:51:46 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@ int file_lines(int fd)
 	while (str)
 	{
 		lines_num++;
+		free(str);
 		str = get_next_line(fd);
 	}
+	free(str);
 	return (lines_num);
 }
 
 char **read_map(char *file)
 {
 	char **str;
+	char *tmp;
 	int lines_num;
 	int fd;
 	int i;
@@ -47,7 +50,9 @@ char **read_map(char *file)
 	i = 0;
 	while (i < lines_num)
 	{
-		str[i] = ft_strtrim(get_next_line(fd), "\n");
+		tmp = get_next_line(fd);
+		str[i] = ft_strtrim(tmp, "\n");
+		free(tmp);
 		i++;
 	}
 	str[lines_num] = 0;
@@ -62,16 +67,18 @@ int main(int ac, char **av)
 	if (ac == 2)
 	{
 		lines = read_map(av[1]);
-		if (!lines || !map_valid(lines))
+		if (!lines || !map_valid(lines) || !map_walls(lines) || !parse_map(lines))
 		{
-			printf("Error\n");
+			printf("Error\nInvalid Map");
+			free_array(lines);
 			return (0);
 		}
+		load_game(lines);
+		printf("Map Valid\n");
 	}
 	else
-	{
-		printf("Error\n");
-	}
+		printf("Error\nMissing Args");
+	free_array(lines);
 	return (0);
 }
 
