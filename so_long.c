@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 05:51:46 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:24:28 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,12 @@ int main(int ac, char **av)
 	if (ac == 2)
 	{
 		lines = read_map(av[1]);
-		if (!lines || !map_valid(lines) || !map_walls(lines) || !parse_map(lines))
+		if (!lines)
+		{
+			printf("Error\nInvalid Map");
+			return (0);
+		}
+		if (!map_valid(lines) || !map_walls(lines) || !parse_map(lines))
 		{
 			printf("Error\nInvalid Map");
 			free_array(lines);

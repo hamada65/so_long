@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:53:00 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 23:52:50 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:29:43 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void load_textures(t_mlx_data *mlx_data, char **map)
 	mlx_data->coin.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/coin.xpm", &mlx_data->coin.width, &mlx_data->coin.height);
 	mlx_data->exit_opened.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/exit_opened.xpm", &mlx_data->exit_opened.width, &mlx_data->exit_opened.height);
 	mlx_data->exit.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/exit.xpm", &mlx_data->exit.width, &mlx_data->exit.height);
+	mlx_data->enemies.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/enemies.xpm", &mlx_data->enemies.width, &mlx_data->enemies.height);
+	mlx_data->explosion.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr, "srcs/img/explosion.xpm", &mlx_data->explosion.width, &mlx_data->explosion.height);
 	i = 0;
 	while (map[i])
 	{
@@ -84,6 +86,12 @@ void load_textures(t_mlx_data *mlx_data, char **map)
 				mlx_data->player.pos_i = i;
 				mlx_data->player.pos_j = j;
 			}
+			else if (map[i][j] == 'X')
+			{
+				mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->enemies.img, j * 60, i * 60);
+				mlx_data->enemies.pos_i = i;
+				mlx_data->enemies.pos_j = j;
+			}
 			j++;
 		}
 		i++;
@@ -104,15 +112,25 @@ void update_door(t_mlx_data *mlx_data)
 	mlx_data->map[*i][*j] = 'V';
 }
 
-void check_pos(t_mlx_data *mlx_data)
+void check_pos(t_mlx_data *mlx_data, int *pos_i, int *pos_j)
 {
-	int *pos_i;
-	int *pos_j;
-
+	printf("moves : %d, collected coins : %d, required_coind = %d\n", mlx_data->moves, mlx_data->collected_coins, mlx_data->required_coins);
 	mlx_data->moves++;
 	pos_i = &mlx_data->player.pos_i;
 	pos_j = &mlx_data->player.pos_j;
-	if (mlx_data->map[*pos_i][*pos_j] == 'C')
+	if (mlx_data->map[*pos_i][*pos_j] == 'X')
+	{
+		printf("You Loose\n");
+		printf("pos i = %d, pos j = %d\n", mlx_data->player.pos_i, mlx_data->player.pos_j);
+		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->explosion.img, *pos_j * 60, *pos_i * 60);
+		mlx_string_put(mlx_data->mlx_ptr, mlx_data->mlx_window, (mlx_data->map_size_x)/2, (mlx_data->map_size_y)/2, 1, "You Loose");
+		mlx_do_sync(mlx_data->mlx_ptr);
+		sleep(3);
+		mlx_destroy_display(mlx_data->mlx_ptr);
+		exit(0);
+		return ;
+	}
+	else if (mlx_data->map[*pos_i][*pos_j] == 'C')
 	{
 		mlx_data->map[*pos_i][*pos_j] = '0';
 		mlx_data->collected_coins++;
@@ -135,7 +153,7 @@ int key_release(int keycode, t_mlx_data *mlx_data)
 
 	i = &mlx_data->player.pos_i;
 	j = &mlx_data->player.pos_j;
-	// printf("key released : %d\n", keycode);
+	printf("key released : %d\n", keycode);
 	if (keycode == 119 || keycode == 65362) // w
 	{
 		if (mlx_data->map[(*i)-1][*j] == '1' || mlx_data->map[(*i)-1][*j] == 'E')
@@ -170,8 +188,8 @@ int key_release(int keycode, t_mlx_data *mlx_data)
 	}
 	else
 		return (keycode);
-	check_pos(mlx_data);
-	printf("moves : %d, collected coins : %d, required_coind = %d\n", mlx_data->moves, mlx_data->collected_coins, mlx_data->required_coins);
+	check_pos(mlx_data, i, j);
+	// update_text_info(mlx_data);
 	return (keycode);
 }
 
@@ -200,8 +218,6 @@ int map_calculate(char **s, char c)
 void load_game(char **map)
 {
 	t_mlx_data mlx_data;
-	int size_x;
-	int size_y;
 
 	mlx_data.map = map;
 	mlx_data.collected_coins = 0;
@@ -213,14 +229,16 @@ void load_game(char **map)
 		printf("Error\n");
 		return ;
 	}
-	calcul_map_size(mlx_data.map, &size_x, &size_y);
-	mlx_data.mlx_window = mlx_new_window(mlx_data.mlx_ptr, size_x, size_y, "so_long 1337");
+	calcul_map_size(mlx_data.map, &mlx_data.map_size_x, &mlx_data.map_size_y);
+	mlx_data.mlx_window = mlx_new_window(mlx_data.mlx_ptr, mlx_data.map_size_x, mlx_data.map_size_y, "so_long 1337");
 	if (!mlx_data.mlx_window)
 	{
 		printf("Error\n");
 		return ;
 	}
 	load_textures(&mlx_data, mlx_data.map);
+	// mlx_data.info = ft_strjoin("Player Moves : ", ft_itoa(mlx_data.moves));
+	// mlx_string_put(mlx_data.mlx_ptr, mlx_data.mlx_window, 60, 60, 1, mlx_data.info);
 	mlx_key_hook(mlx_data.mlx_window, &key_release, &mlx_data);
 	mlx_loop(mlx_data.mlx_ptr);
 }

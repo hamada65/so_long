@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:21:55 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/17 21:41:42 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:27:52 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int map_valid(char **lines)
 	map.exit = 0;
 	map.wall = 0;
 	map.starting = 0;
+	map.enimies = 0;
 	i = 0;
 	len = ft_strlen(lines[i]);
 	while (lines[i])
@@ -41,6 +42,8 @@ int map_valid(char **lines)
 				map.exit++;
 			else if (lines[i][j] == 'P')
 				map.starting++;
+			else if (lines[i][j] == 'X')
+				map.enimies++;
 			else
 				return (0);
 			j++;
@@ -120,7 +123,7 @@ int		find_way_to_exit(char **lines, int i, int j)
 {
 	if (lines[i][j] == 'E')
 		return (1);
-	if (lines[i][j] == '1' || lines[i][j] == 'V')
+	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'X')
 		return (0);
 	lines[i][j] = 'V';
 	if (find_way_to_exit(lines, i + 1, j))
@@ -144,7 +147,7 @@ void	find_way_to_all_collectibles(char **lines, int i, int j, int required_coins
 		(*collected_coins)++;
 	if (*collected_coins == required_coins)
 		return ;
-	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'E')
+	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'E' || lines[i][j] == 'X')
 		return ;
 	lines[i][j] = 'V';
 	find_way_to_all_collectibles(lines, i + 1, j, required_coins, collected_coins);
