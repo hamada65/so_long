@@ -2,7 +2,10 @@ SRCS =  so_long.c \
 		map_check.c \
 		srcs/get_next_line/get_next_line.c \
 		srcs/get_next_line/get_next_line_utils.c \
-		mlx_utils.c
+		mlx_utils.c \
+		game_over.c \
+		win_game.c	\
+		enemies.c
 NAME = so_long
 OBJS = ${SRCS:.c=.o}
 CC = cc

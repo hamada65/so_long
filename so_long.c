@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/18 18:24:28 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:08:22 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int main(int ac, char **av)
 {
 	char **lines;
 	int i = 0;
+	printf("ac = %d\n", ac);
 	if (ac == 2)
 	{
 		lines = read_map(av[1]);
@@ -80,10 +81,10 @@ int main(int ac, char **av)
 		}
 		load_game(lines);
 		printf("Map Valid\n");
+		free_array(lines);
 	}
 	else
 		printf("Error\nMissing Args");
-	free_array(lines);
 	return (0);
 }
 

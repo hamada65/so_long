@@ -2,6 +2,7 @@
 	"files.associations": {
 		"string.h": "c",
 		"so_long.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"xlib.h": "c"
 	}
 }

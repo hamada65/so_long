@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:26 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/18 20:01:45 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:33:03 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct s_mlx_data
 	t_img_info exit_opened;
 	t_img_info enemies;
 	t_img_info explosion;
+	t_img_info game_over;
+	t_img_info win;
 	int required_coins;
 	int collected_coins;
 	int moves;
@@ -72,4 +74,7 @@ int		parse_map(char **lines);
 void	free_array(char **lines);
 void load_game(char **map);
 int map_calculate(char **s, char c);
+void    game_over(t_mlx_data *mlx_data, int *pos_i, int *pos_j);
+void win_game(t_mlx_data *mlx_data, int *pos_i, int *pos_j);
+void    mlx_move_enemies_loop(t_mlx_data *mlx_data);
 #endif
