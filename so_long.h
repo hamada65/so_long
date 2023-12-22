@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:26 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/19 17:33:03 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/22 07:50:06 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ void load_game(char **map);
 int map_calculate(char **s, char c);
 void    game_over(t_mlx_data *mlx_data, int *pos_i, int *pos_j);
 void win_game(t_mlx_data *mlx_data, int *pos_i, int *pos_j);
-void    mlx_move_enemies_loop(t_mlx_data *mlx_data);
+void    mlx_move_enemies(t_mlx_data *mlx_data);
+void    load_enemies(t_mlx_data *mlx_data);
 #endif

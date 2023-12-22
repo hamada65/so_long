@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:53:00 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/22 00:29:44 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/22 07:29:49 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ void load_textures(t_mlx_data *mlx_data, char **map)
 				mlx_data->enemies.pos_i = i;
 				mlx_data->enemies.pos_j = j;
 			}
+			else if (map[i][j] == 'V')
+			{
+				mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->exit.img, j * 60, i * 60);
+				// mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->enemies.img, j * 60, i * 60);
+				mlx_data->exit.pos_i = i;
+				mlx_data->exit.pos_j = j;
+			}
 			j++;
 		}
 		i++;
@@ -105,22 +112,24 @@ void load_textures(t_mlx_data *mlx_data, char **map)
 		
 }
 
-void update_door(t_mlx_data *mlx_data)
-{
-	int *i;
-	int *j;
+// void update_door(t_mlx_data *mlx_data)
+// {
+// 	int *i;
+// 	int *j;
 
-	i = &mlx_data->exit_opened.pos_i;
-	j = &mlx_data->exit_opened.pos_j;
-	mlx_data->exit.pos_i = mlx_data->exit_opened.pos_i;
-	mlx_data->exit.pos_j = mlx_data->exit_opened.pos_j;
-	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->exit.img, *j * 60, *i * 60);
-	mlx_data->map[*i][*j] = 'V';
-}
+// 	i = &mlx_data->exit_opened.pos_i;
+// 	j = &mlx_data->exit_opened.pos_j;
+// 	// mlx_data->exit.pos_i = mlx_data->exit_opened.pos_i;
+// 	// mlx_data->exit.pos_j = mlx_data->exit_opened.pos_j;
+// 	// mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->exit.img, *j * 60, *i * 60);
+// 	mlx_data->map[*i][*j] = 'V';
+// }
 
 void check_pos(t_mlx_data *mlx_data)
 {
 	// printf("moves : %d, collected coins : %d, required_coind = %d\n", mlx_data->moves, mlx_data->collected_coins, mlx_data->required_coins);
+	mlx_clear_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
+	load_textures(mlx_data, mlx_data->map);
 	mlx_data->moves++;
 	int *pos_i;
 	int *pos_j;
@@ -142,13 +151,22 @@ void check_pos(t_mlx_data *mlx_data)
 		return ;
 	}
 	if (mlx_data->collected_coins == mlx_data->required_coins)
-		update_door(mlx_data);
+		mlx_data->map[mlx_data->exit_opened.pos_i][mlx_data->exit_opened.pos_j] = 'V';
+		// update_door(mlx_data);
 	mlx_data->map[*pos_i][*pos_j] = 'P';
 }
 
 int render_map(t_mlx_data *mlx_data)
 {
-	printf("render\n");
+	static int i = 0;
+	if (i == 5000)
+	{
+		mlx_move_enemies(mlx_data);
+		i = 0;
+	}
+	i++;
+	//printf("render\n");
+	// mlx_clear_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
 	load_textures(mlx_data, mlx_data->map);
 	return (0);
 }
@@ -256,12 +274,13 @@ void load_game(char **map)
 		return ;
 	}
 	load_images(&mlx_data);
+	load_enemies(&mlx_data);
 	load_textures(&mlx_data, mlx_data.map);
 	// mlx_data.info = ft_strjoin("Player Moves : ", ft_itoa(mlx_data.moves));
 	// mlx_string_put(mlx_data.mlx_ptr, mlx_data.mlx_window, 60, 60, 16735835, "test");
 	// mlx_move_enemies_loop(&mlx_data);
 	// mlx_hook(mlx_data.mlx_window, 5, 0, &render_map, &mlx_data);
-	mlx_loop_hook(mlx_data.mlx_ptr, & render_map, &mlx_data);
+	mlx_loop_hook(mlx_data.mlx_ptr, &render_map, &mlx_data);
 	mlx_hook(mlx_data.mlx_window, 2, 1L<<0, &key_release, &mlx_data);
 	// mlx_key_hook(mlx_data.mlx_window, &key_release, &mlx_data);
 	mlx_loop(mlx_data.mlx_ptr);
