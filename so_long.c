@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/21 22:40:48 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/24 01:07:47 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,22 @@ char **read_map(char *file)
 	return (str);
 }
 
+int check_file_name(char *file_name)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = ft_strlen(file_name);
+	if (len >= 5)
+	{
+		printf("file_name = %s\n", file_name);
+		if (file_name[len] == '\0' && file_name[len - 1] == 'r' && file_name[len - 2] == 'e' && file_name[len - 3] == 'b' && file_name[len - 4] == '.')
+			return (1);
+	}
+	return (0);
+}
+
 int main(int ac, char **av)
 {
 	char **lines;
@@ -67,6 +83,11 @@ int main(int ac, char **av)
 	printf("ac = %d\n", ac);
 	if (ac == 2)
 	{
+		if (!check_file_name(av[1]))
+		{
+			printf("Error\nInvalid File Name");
+			return (0);
+		}
 		lines = read_map(av[1]);
 		if (!lines)
 		{
@@ -80,8 +101,8 @@ int main(int ac, char **av)
 			return (0);
 		}
 		load_game(lines);
-		printf("Map Valid\n");
-		free_array(lines);
+		// printf("Map Valid\n");
+		// free_array(lines);
 	}
 	else
 		printf("Error\nMissing Args");

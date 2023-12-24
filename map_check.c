@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:21:55 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/20 02:07:39 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/23 01:18:19 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int		find_way_to_exit(char **lines, int i, int j)
 {
 	if (lines[i][j] == 'E')
 		return (1);
-	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'X')
+	// lines[i][j] == 'X'
+	if (lines[i][j] == '1' || lines[i][j] == 'V')
 		return (0);
 	lines[i][j] = 'V';
 	if (find_way_to_exit(lines, i + 1, j))
@@ -147,7 +148,8 @@ void	find_way_to_all_collectibles(char **lines, int i, int j, int required_coins
 		(*collected_coins)++;
 	if (*collected_coins == required_coins)
 		return ;
-	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'E' || lines[i][j] == 'X')
+	// lines[i][j] == 'X'
+	if (lines[i][j] == '1' || lines[i][j] == 'V' || lines[i][j] == 'E')
 		return ;
 	lines[i][j] = 'V';
 	find_way_to_all_collectibles(lines, i + 1, j, required_coins, collected_coins);

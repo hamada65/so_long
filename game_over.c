@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:05:47 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/19 17:32:28 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/23 20:59:40 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    game_over(t_mlx_data *mlx_data, int *pos_i, int *pos_j)
     int j;
 
     printf("You Lose\n");
-    printf("pos i = %d, pos j = %d\n", mlx_data->player.pos_i, mlx_data->player.pos_j);
+    printf("pos i = %d, pos j = %d\n", mlx_data->player_pos_i, mlx_data->player_pos_j);
     mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->explosion.img, *pos_j * 60, *pos_i * 60);
     // mlx_string_put(mlx_data->mlx_ptr, mlx_data->mlx_window, (mlx_data->map_size_x)/2, (mlx_data->map_size_y)/2, 0xffffff, "You Loose");
     mlx_do_sync(mlx_data->mlx_ptr);

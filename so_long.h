@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:26 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/22 07:50:06 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/23 22:23:01 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,30 @@ typedef struct img_info
 	void *img;
 }	t_img_info;
 
+typedef struct s_enemy
+{
+	int pos_i;
+	int pos_j;
+	int direction;
+	struct s_enemy *next;
+}	t_enemy;
+
 typedef struct s_mlx_data
 {
 	void *mlx_ptr;
 	void *mlx_window;
 	char **map;
+	t_enemy *enemies_info;
 	int map_size_x;
 	int map_size_y;
 	t_img_info wall;
 	t_img_info floor;
-	t_img_info coin;
-	t_img_info player;
-	t_img_info player_up;
-	t_img_info player_left;
-	t_img_info player_right;
+	t_img_info coin[18];
+	t_img_info player_left[6];
+	t_img_info player_right[6];
 	t_img_info exit;
 	t_img_info exit_opened;
-	t_img_info enemies;
+	t_img_info enemies[4];
 	t_img_info explosion;
 	t_img_info game_over;
 	t_img_info win;
@@ -55,6 +62,10 @@ typedef struct s_mlx_data
 	int collected_coins;
 	int moves;
 	char *info;
+	char *info2;
+	int player_pos_i;
+	int player_pos_j;
+	int direction;
 }	t_mlx_data;
 
 
