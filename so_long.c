@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/26 14:00:32 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/26 22:27:53 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int file_lines(int fd)
 	str = get_next_line(fd);
 	while (str)
 	{
-		lines_num++;
+		if (ft_strncmp(str, "\n", 2))
+			lines_num++;
 		free(str);
 		str = get_next_line(fd);
 	}
@@ -51,9 +52,9 @@ char **read_map(char *file)
 	while (i < lines_num)
 	{
 		tmp = get_next_line(fd);
-		str[i] = ft_strtrim(tmp, "\n");
+		if (ft_strncmp(tmp, "\n", 1))
+			str[i++] = ft_strtrim(tmp, "\n");
 		free(tmp);
-		i++;
 	}
 	str[lines_num] = 0;
 	close(fd);

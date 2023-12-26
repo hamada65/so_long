@@ -16,8 +16,7 @@ RM = rm -f
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${OBJS} libft.a -Lminilibx-linux -lmlx_Linux -o ${NAME} -lX11 -lXext -g3
-# -fsanitize=leak
+	${CC} ${OBJS} libft.a -Lminilibx-linux -lmlx_Linux -o ${NAME} -lX11 -lXext -fsanitize=address
 
 clean:
 	${RM} ${OBJS} ${OBJS_B}
