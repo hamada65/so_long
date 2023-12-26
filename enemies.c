@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:27:55 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/23 03:59:29 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/25 18:24:06 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ void load_enemies(t_mlx_data *mlx_data)
                 new->pos_j = j;
                 new->direction = 0;
                 new->next = NULL;
-                printf("enemy at i = %d, j = %d\n", new->pos_i, new->pos_j);
+                // printf("enemy at i = %d, j = %d\n", new->pos_i, new->pos_j);
                 ft_enemyadd_back(&mlx_data->enemies_info, new);
                 enemies_count++;
             }
@@ -224,5 +224,5 @@ void load_enemies(t_mlx_data *mlx_data)
         }
         i++;
     }
-    printf("enemies_count = %d\n", enemies_count);
+    // printf("enemies_count = %d\n", enemies_count);
 }

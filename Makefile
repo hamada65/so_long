@@ -5,7 +5,8 @@ SRCS =  so_long.c \
 		mlx_utils.c \
 		game_over.c \
 		win_game.c	\
-		enemies.c
+		enemies.c	\
+		destroy_game.c
 NAME = so_long
 OBJS = ${SRCS:.c=.o}
 CC = cc
@@ -15,7 +16,8 @@ RM = rm -f
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${OBJS} libft.a -Lminilibx-linux -lmlx_Linux -o ${NAME} -lX11 -lXext
+	${CC} ${OBJS} libft.a -Lminilibx-linux -lmlx_Linux -o ${NAME} -lX11 -lXext -g3
+# -fsanitize=leak
 
 clean:
 	${RM} ${OBJS} ${OBJS_B}

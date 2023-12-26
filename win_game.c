@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:08:07 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/19 17:32:36 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:38:30 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ void win_game(t_mlx_data *mlx_data, int *pos_i, int *pos_j)
     mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->win.img, ((mlx_data->map_size_x/60)-4)*30, ((mlx_data->map_size_y/60)-3)*30);
     mlx_do_sync(mlx_data->mlx_ptr);
     sleep(3);
-    mlx_destroy_display(mlx_data->mlx_ptr);
-    exit(0);
+    destroy_game(mlx_data);
 }
