@@ -4,6 +4,7 @@
 		"so_long.h": "c",
 		"unistd.h": "c",
 		"xlib.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"stdlib.h": "c"
 	}
 }

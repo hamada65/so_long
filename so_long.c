@@ -6,16 +6,19 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/26 22:27:53 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/28 01:11:14 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int file_lines(int fd)
+int	file_lines(char *file)
 {
-	int lines_num;
-	char *str;
+	int		lines_num;
+	char	*str;
+	int		fd;
+
+	fd = open(file, O_RDONLY);
 	lines_num = 0;
 	str = get_next_line(fd);
 	while (str)
@@ -26,23 +29,20 @@ int file_lines(int fd)
 		str = get_next_line(fd);
 	}
 	free(str);
+	close(fd);
 	return (lines_num);
 }
 
-char **read_map(char *file)
+char	**read_map(char *file)
 {
-	char **str;
-	char *tmp;
-	int lines_num;
-	int fd;
-	int i;
+	char	**str;
+	char	*tmp;
+	int		lines_num;
+	int		fd;
+	int		i;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	lines_num = file_lines(fd);
-	close(fd);
-	str = (char **)malloc(sizeof(char *)*(lines_num) + 1);
+	lines_num = file_lines(file);
+	str = (char **)malloc(sizeof(char *) * (lines_num) + 1);
 	if (!str)
 		return (0);
 	fd = open(file, O_RDONLY);
@@ -61,83 +61,61 @@ char **read_map(char *file)
 	return (str);
 }
 
-int check_file_name(char *file_name)
+int	check_file_name(char *file_name)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(file_name);
 	if (len >= 5)
 	{
-		printf("file_name = %s\n", file_name);
-		if (file_name[len] == '\0' && file_name[len - 1] == 'r' && file_name[len - 2] == 'e' && file_name[len - 3] == 'b' && file_name[len - 4] == '.')
+		if (file_name[len] == '\0' && file_name[len - 1] == 'r'
+			&& file_name[len - 2] == 'e'
+			&& file_name[len - 3] == 'b' && file_name[len - 4] == '.')
 			return (1);
 	}
 	return (0);
 }
 
-int main(int ac, char **av)
+char	**check_and_read(char *file)
 {
-	char **lines;
-	int i = 0;
-	printf("ac = %d\n", ac);
-	if (ac == 2)
+	char	**lines;
+
+	if (!check_file_name(file))
 	{
-		if (!check_file_name(av[1]))
-		{
-			printf("Error\nInvalid File Name");
-			return (0);
-		}
-		lines = read_map(av[1]);
-		if (!lines)
-		{
-			printf("Error\nInvalid Map");
-			return (0);
-		}
-		if (!map_valid(lines) || !map_walls(lines) || !parse_map(lines))
-		{
-			printf("Error\nInvalid Map");
-			free_array(lines);
-			return (0);
-		}
-		load_game(lines);
-		printf("end Game\n");
-		// printf("Map Valid\n");
-		// free_array(lines);
+		ft_printf("Error\nInvalid File Name");
+		return (NULL);
 	}
-	else
-		printf("Error\nMissing Args");
-	return (0);
+	lines = read_map(file);
+	if (!lines)
+	{
+		ft_printf("Error\nCan`t Read Map");
+		return (0);
+	}
+	if (!map_valid(lines) || !map_walls(lines) || !parse_map(lines))
+	{
+		ft_printf("Error\nInvalid Map");
+		free_array(lines);
+		return (NULL);
+	}
+	return (lines);
 }
 
-// int render_map2(t_mlx_data *mlx_data)
-// {
-// 	static int i = 0;
-// 	i++;
-// 	if (i == 100000/2)
-// 	{
-// 		mlx_clear_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
-// 		mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window, mlx_data->exit.img, 120, 120);
-// 	}
-// 	else if (i == 100000)
-// 	{
-// 		mlx_clear_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
-// 		mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->exit.img);
-// 		exit(0);
-// 	}
-// 	return 0;
-// }
+int	main(int ac, char **av)
+{
+	char	**lines;
+	int		i;
 
-// int main()
-// {
-// 	t_mlx_data mlx_data;
-
-// 	mlx_data.mlx_ptr = mlx_init();
-// 	mlx_data.mlx_window = mlx_new_window(mlx_data.mlx_ptr, 1920, 1080, "hamada");
-// 	mlx_data.exit.img = mlx_xpm_file_to_image(mlx_data.mlx_ptr, "srcs/img/exit.xpm", &mlx_data.exit.width, &mlx_data.exit.height);
-// 	mlx_put_image_to_window(mlx_data.mlx_ptr, mlx_data.mlx_window, mlx_data.exit.img, 60, 60);
-// 	mlx_loop_hook(mlx_data.mlx_ptr, &render_map2, &mlx_data);
-// 	mlx_loop(mlx_data.mlx_ptr);
-// 	return 0;
-// }
+	i = 0;
+	if (ac == 2)
+	{
+		lines = check_and_read(av[1]);
+		if (!lines)
+			return (0);
+		load_game(lines);
+	}
+	else
+		ft_printf("Error\nMissing Args");
+	return (0);
+}
