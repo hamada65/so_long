@@ -6,60 +6,11 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/28 01:11:14 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/28 23:40:32 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-int	file_lines(char *file)
-{
-	int		lines_num;
-	char	*str;
-	int		fd;
-
-	fd = open(file, O_RDONLY);
-	lines_num = 0;
-	str = get_next_line(fd);
-	while (str)
-	{
-		if (ft_strncmp(str, "\n", 2))
-			lines_num++;
-		free(str);
-		str = get_next_line(fd);
-	}
-	free(str);
-	close(fd);
-	return (lines_num);
-}
-
-char	**read_map(char *file)
-{
-	char	**str;
-	char	*tmp;
-	int		lines_num;
-	int		fd;
-	int		i;
-
-	lines_num = file_lines(file);
-	str = (char **)malloc(sizeof(char *) * (lines_num) + 1);
-	if (!str)
-		return (0);
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	i = 0;
-	while (i < lines_num)
-	{
-		tmp = get_next_line(fd);
-		if (ft_strncmp(tmp, "\n", 1))
-			str[i++] = ft_strtrim(tmp, "\n");
-		free(tmp);
-	}
-	str[lines_num] = 0;
-	close(fd);
-	return (str);
-}
 
 int	check_file_name(char *file_name)
 {
@@ -72,28 +23,56 @@ int	check_file_name(char *file_name)
 	{
 		if (file_name[len] == '\0' && file_name[len - 1] == 'r'
 			&& file_name[len - 2] == 'e'
-			&& file_name[len - 3] == 'b' && file_name[len - 4] == '.')
+			&& file_name[len - 3] == 'b'
+			&& file_name[len - 4] == '.')
 			return (1);
 	}
 	return (0);
 }
 
+int	check_characters(char **lines)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (lines[i])
+	{
+		j = 0;
+		while (lines[i][j])
+		{
+			if (!(lines[i][j] == '0' || lines[i][j] == '1' || lines[i][j] == 'C'
+					|| lines[i][j] == 'E' || lines[i][j] == 'P'
+					|| lines[i][j] == 'X'))
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
 char	**check_and_read(char *file)
 {
 	char	**lines;
+	char	*tmp;
 
-	if (!check_file_name(file))
+	tmp = ft_strtrim(file, " ");
+	if (!check_file_name(tmp))
 	{
 		ft_printf("Error\nInvalid File Name");
+		free(tmp);
 		return (NULL);
 	}
-	lines = read_map(file);
+	lines = read_map(tmp);
+	free(tmp);
 	if (!lines)
 	{
 		ft_printf("Error\nCan`t Read Map");
 		return (0);
 	}
-	if (!map_valid(lines) || !map_walls(lines) || !parse_map(lines))
+	if (!check_characters(lines) || !map_valid(lines) || !map_walls(lines)
+		|| !parse_map(lines))
 	{
 		ft_printf("Error\nInvalid Map");
 		free_array(lines);
@@ -116,6 +95,6 @@ int	main(int ac, char **av)
 		load_game(lines);
 	}
 	else
-		ft_printf("Error\nMissing Args");
+		ft_printf("Error\nInvalid Args");
 	return (0);
 }

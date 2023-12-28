@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 15:27:56 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/27 22:39:08 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:56:51 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,29 @@ void	free_enemies(t_enemy **lst)
 
 int	destroy_game(t_mlx_data *mlx_data)
 {
-	mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->wall.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->exit.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->floor.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->exit_opened.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->explosion.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->game_over.img);
-	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->win.img);
-	destroy_images_array(mlx_data);
-	free_enemies(&mlx_data->enemies_info);
-	free(mlx_data->info);
-	free(mlx_data->info2);
+	if (mlx_data->mlx_ptr)
+	{
+		if (mlx_data->mlx_window)
+		{
+			mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->mlx_window);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->wall.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->exit.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->floor.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->exit_opened.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->explosion.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->game_over.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->win.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->black_img.img);
+			mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->white_img.img);
+			destroy_images_array(mlx_data);
+			free_enemies(&mlx_data->enemies_info);
+			free(mlx_data->info);
+			free(mlx_data->info2);
+		}
+		mlx_destroy_display(mlx_data->mlx_ptr);
+		free(mlx_data->mlx_ptr);
+	}
 	free_array(mlx_data->map);
-	mlx_destroy_display(mlx_data->mlx_ptr);
-	free(mlx_data->mlx_ptr);
 	exit(0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 00:04:38 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/28 00:57:41 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/28 23:15:09 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,17 @@ void	load_enemies_frames(t_mlx_data *mlx_data, t_img_info *enemies,
 	}
 }
 
-void	load_images(t_mlx_data *mlx_data)
+void	load_animated_frames(t_mlx_data *mlx_data)
 {
 	load_player_frames(mlx_data, mlx_data->player_left, 6, 1);
 	load_player_frames(mlx_data, mlx_data->player_right, 6, 0);
 	load_coins_frames(mlx_data, mlx_data->coin, 18);
 	load_enemies_frames(mlx_data, mlx_data->enemies, 4);
+}
+
+void	load_images(t_mlx_data *mlx_data)
+{
+	load_animated_frames(mlx_data);
 	mlx_data->wall.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr,
 			"srcs/img/wall.xpm", &mlx_data->wall.width, &mlx_data->wall.height);
 	mlx_data->floor.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr,
@@ -107,4 +112,10 @@ void	load_images(t_mlx_data *mlx_data)
 			&mlx_data->game_over.height);
 	mlx_data->win.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr,
 			"srcs/img/win.xpm", &mlx_data->win.width, &mlx_data->win.height);
+	mlx_data->black_img.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr,
+			"srcs/img/black.xpm", &mlx_data->black_img.width,
+			&mlx_data->black_img.height);
+	mlx_data->white_img.img = mlx_xpm_file_to_image(mlx_data->mlx_ptr,
+			"srcs/img/white.xpm", &mlx_data->white_img.width,
+			&mlx_data->white_img.height);
 }
