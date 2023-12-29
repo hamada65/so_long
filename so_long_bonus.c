@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   so_long_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:32:33 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/29 20:06:39 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:43:56 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	check_file_name(char *file_name)
 {
@@ -42,7 +42,8 @@ int	check_characters(char **lines)
 		while (lines[i][j])
 		{
 			if (!(lines[i][j] == '0' || lines[i][j] == '1' || lines[i][j] == 'C'
-					|| lines[i][j] == 'E' || lines[i][j] == 'P'))
+					|| lines[i][j] == 'E' || lines[i][j] == 'P'
+					|| lines[i][j] == 'X'))
 				return (0);
 			j++;
 		}

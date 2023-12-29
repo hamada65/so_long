@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_movement.c                                  :+:      :+:    :+:   */
+/*   player_movement_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:34:35 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/29 20:29:40 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:39:09 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	go_up(t_mlx_data *mlx_data, int *i, int *j)
 {
@@ -34,6 +34,7 @@ void	go_down(t_mlx_data *mlx_data, int *i, int *j)
 
 void	go_left(t_mlx_data *mlx_data, int *i, int *j)
 {
+	mlx_data->direction = 1;
 	if (mlx_data->map[*i][(*j) - 1] == '1' || mlx_data->map[*i][(*j)
 		- 1] == 'E')
 		return ;
@@ -44,6 +45,7 @@ void	go_left(t_mlx_data *mlx_data, int *i, int *j)
 
 void	go_right(t_mlx_data *mlx_data, int *i, int *j)
 {
+	mlx_data->direction = 0;
 	if (mlx_data->map[*i][(*j) + 1] == '1' || mlx_data->map[*i][(*j)
 		+ 1] == 'E')
 		return ;

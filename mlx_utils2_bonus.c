@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_utils2.c                                       :+:      :+:    :+:   */
+/*   mlx_utils2_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:07:38 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/29 20:29:29 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:39:03 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
+
+void	display_str(t_mlx_data *mlx_data, int must_free)
+{
+	char	*tmp;
+
+	if (must_free == 1)
+	{
+		free(mlx_data->info);
+		free(mlx_data->info2);
+	}
+	tmp = ft_itoa(mlx_data->moves);
+	mlx_data->info = ft_strjoin("Player Moves : ", tmp);
+	free(tmp);
+	tmp = ft_itoa(mlx_data->collected_coins);
+	mlx_data->info2 = ft_strjoin("Collected Coins : ", tmp);
+	free(tmp);
+}
 
 void	calcul_map_size(char **map, int *size_x, int *size_y)
 {
@@ -39,6 +56,7 @@ void	data_init(t_mlx_data *mlx_data, char **map)
 	mlx_data->map = map;
 	mlx_data->collected_coins = 0;
 	mlx_data->moves = 0;
+	mlx_data->direction = 0;
 	mlx_data->required_coins = map_calculate(mlx_data->map, 'C');
 	calcul_map_size(mlx_data->map, &mlx_data->map_size_x,
 		&mlx_data->map_size_y);

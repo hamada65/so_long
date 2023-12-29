@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   win_game.c                                         :+:      :+:    :+:   */
+/*   win_game_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:08:07 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/29 20:56:30 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:51:26 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	put_white_background(t_mlx_data *mlx_data)
 {
 	int			i;
 	int			j;
+	long long	old_time;
 
+	old_time = current_time_in_milliseconds();
 	i = (mlx_data->map_size_x / 60) - 1;
 	while (i >= 0)
 	{
@@ -26,6 +28,10 @@ void	put_white_background(t_mlx_data *mlx_data)
 			mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->mlx_window,
 				mlx_data->white_img.img, i * 60, j * 60);
 			j--;
+			mlx_do_sync(mlx_data->mlx_ptr);
+			while (current_time_in_milliseconds() - old_time < 2)
+				;
+			old_time = current_time_in_milliseconds();
 		}
 		i--;
 	}

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_check_utils.c                                  :+:      :+:    :+:   */
+/*   map_check_utils_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-rhay <mel-rhay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 23:38:11 by mel-rhay          #+#    #+#             */
-/*   Updated: 2023/12/29 20:03:05 by mel-rhay         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:49:48 by mel-rhay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	map_lines(char **lines)
 {
@@ -90,6 +90,7 @@ int	map_valid(char **lines)
 	map.exit = map_calculate(lines, 'E');
 	map.wall = map_calculate(lines, '1');
 	map.starting = map_calculate(lines, 'P');
+	map.enimies = map_calculate(lines, 'X');
 	i = 0;
 	len = ft_strlen(lines[i]);
 	while (lines[i])
